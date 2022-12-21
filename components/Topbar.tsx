@@ -14,14 +14,13 @@ interface TopbarProps {
 function Topbar({user, isLibrary}: TopbarProps) {
 
     return (
-        <header className="absolute top-0 right-0 left-0 flex space-x-4">
+        <header className="sticky top-0 right-0 left-0 flex space-x-4 bg-black">
             <div className="flex-grow flex items-center">
                 {isLibrary && <LibraryMenu />}
             </div>
-            <div>
-                <div className="flex items-center bg-black space-x-2 opacity-90 hover:opacity-80
-                                cursor-pointer rounded-full p-1 pr-2 bg-black text-white font-bold text-sm
-                                mt-5 mr-8"
+            <div className="flex items-center">
+                <div className="flex items-center bg-black space-x-2 m-4 opacity-90 hover:opacity-80
+                                cursor-pointer rounded-full p-1 pr-2 bg-black text-white font-bold text-sm"
                      onClick={() => signOut()}
                 >
                     <img src={user.image || ''} alt="avatar" className="rounded-full w-6 h-6"/>

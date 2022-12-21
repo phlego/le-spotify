@@ -4,7 +4,7 @@ function LibraryMenu() {
         <nav className="ml-8 text-white">
             <ul>
                 <li className="inline-block cursor-pointer"><a
-                    className="inline-block py-2 px-4 mr-2 rounded bg-black opacity-90 hover:opacity-80"
+                    className="inline-block py-2 px-4 mr-2 rounded bg-gray-800 opacity-90 hover:opacity-80"
                     href="">Playlists</a></li>
                 <li className="inline-block cursor-pointer"><a
                     className="inline-block py-2 px-4 mr-2"

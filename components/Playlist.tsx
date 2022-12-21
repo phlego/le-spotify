@@ -29,7 +29,7 @@ const colors = [
     'from-rose-500',
 ]
 
-function Center() {
+function Playlist() {
 
     const spotifyApi = useSpotify()
     const [playlistId] = useRecoilState(playlistIdState)
@@ -58,7 +58,7 @@ function Center() {
     }
 
     return (
-        <div className="flex-grow h-screen overflow-y-scroll scrollbar-hide relative">
+        <div className="flex-grow h-screen overflow-y-scroll scrollbar-hide">
             <Topbar user={user}/>
 
             <section className={`flex items-end space-x-7 bg-gradient-to-b to-black ${color} h-80 p-8 text-white`}>
@@ -78,4 +78,4 @@ function Center() {
     )
 }
 
-export default Center
+export default Playlist
