@@ -1,11 +1,11 @@
-import {signOut, useSession} from 'next-auth/react'
-import {ChevronDownIcon} from '@heroicons/react/24/outline'
+import {useSession} from 'next-auth/react'
 import {useEffect, useState} from 'react'
 import {shuffle} from 'lodash'
 import {useRecoilState} from 'recoil'
 import {playlistIdState, playlistState} from '../atoms/playlistAtom'
 import useSpotify from '../hooks/useSpotify'
 import Songs from './Songs'
+import Topbar from './Topbar'
 
 const DEFAULT_COLOR = 'from-green-500'
 
@@ -58,17 +58,8 @@ function Center() {
     }
 
     return (
-        <div className="flex-grow h-screen overflow-y-scroll scrollbar-hide">
-            <header className="absolute top-5 right-8">
-                <div className="flex items-center bg-black space-x-2 opacity-90 hover:opacity-80
-                                cursor-pointer rounded-full p-1 pr-2 bg-black text-white font-bold text-sm"
-                     onClick={() => signOut()}
-                >
-                    <img src={user.image || ''} alt="avatar" className="rounded-full w-6 h-6"/>
-                    <h2>{user.name}</h2>
-                    <ChevronDownIcon className="h-5 w-5" />
-                </div>
-            </header>
+        <div className="flex-grow h-screen overflow-y-scroll scrollbar-hide relative">
+            <Topbar user={user}/>
 
             <section className={`flex items-end space-x-7 bg-gradient-to-b to-black ${color} h-80 p-8 text-white`}>
                 <img
@@ -82,9 +73,7 @@ function Center() {
                 </div>
             </section>
 
-            <div>
-                <Songs />
-            </div>
+            <Songs/>
         </div>
     )
 }
