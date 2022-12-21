@@ -1,30 +1,41 @@
 import {
+    BookmarkIcon,
+    HeartIcon,
     HomeIcon,
     MagnifyingGlassIcon,
-    QueueListIcon,
     PlusCircleIcon,
-    HeartIcon,
-    BookmarkIcon,
-    ArrowLeftOnRectangleIcon,
-} from "@heroicons/react/24/outline";
-import {useSession, signOut} from "next-auth/react";
+    QueueListIcon,
+} from '@heroicons/react/24/outline'
+import {useSession} from 'next-auth/react'
+import {useEffect, useState} from 'react'
+import useSpotify from '../hooks/useSpotify'
+import {useRecoilState} from 'recoil'
+import {playlistIdState} from '../atoms/playlistAtom'
+import PlaylistObjectSimplified = SpotifyApi.PlaylistObjectSimplified
 
 function Sidebar() {
 
-    const {data: session, status} = useSession()
+    const {data: session} = useSession()
+    const spotifyApi = useSpotify()
+    const [playlists, setPlaylists] = useState<PlaylistObjectSimplified[]>([])
+    const [_playlistId, setPlaylistId] = useRecoilState(playlistIdState)
 
-    console.log('session', session)
+    useEffect(() => {
+        if (!spotifyApi.getAccessToken()) {
+            return
+        }
+
+        spotifyApi.getUserPlaylists().then(data => {
+            const {body: {items}} = data
+            setPlaylists(items)
+        })
+
+    }, [session, spotifyApi])
 
     return (
-        <div className="text-gray-500 p-5 text-sm border-r border-gray-900">
+        <div className="text-gray-500 p-5 border-r border-gray-900 h-screen overflow-y-scroll scrollbar-hide
+                        text-xs lg:text-sm sm:max-w-[12rem] lg:max-w-[15rem] hidden md:inline-flex">
             <div className="space-y-4">
-                <button
-                    className="flex items-center space-x-2 hover:text-white"
-                    onClick={() => signOut()}
-                >
-                    <ArrowLeftOnRectangleIcon className="h-5 w-5"/>
-                    <p>Logout</p>
-                </button>
                 <button className="flex items-center space-x-2 hover:text-white">
                     <HomeIcon className="h-5 w-5"/>
                     <p>Home</p>
@@ -53,19 +64,16 @@ function Sidebar() {
                 </button>
                 <hr className="border-t-[1px] border-gray-900"/>
 
-                <p className="cursor-pointer hover:text-white">Playlist name</p>
-                <p className="cursor-pointer hover:text-white">Playlist name</p>
-                <p className="cursor-pointer hover:text-white">Playlist name</p>
-                <p className="cursor-pointer hover:text-white">Playlist name</p>
-                <p className="cursor-pointer hover:text-white">Playlist name</p>
-                <p className="cursor-pointer hover:text-white">Playlist name</p>
-                <p className="cursor-pointer hover:text-white">Playlist name</p>
-                <p className="cursor-pointer hover:text-white">Playlist name</p>
-                <p className="cursor-pointer hover:text-white">Playlist name</p>
-                <p className="cursor-pointer hover:text-white">Playlist name</p>
-                <p className="cursor-pointer hover:text-white">Playlist name</p>
-                <p className="cursor-pointer hover:text-white">Playlist name</p>
-                <p className="cursor-pointer hover:text-white">Playlist name</p>
+                {playlists.map(playlist => {
+                    const {id, name} = playlist
+                    return <p
+                        key={id}
+                        className="cursor-default hover:text-white"
+                        onClick={() => setPlaylistId(id)}
+                    >
+                        {name || id}
+                    </p>
+                })}
             </div>
         </div>
     )
