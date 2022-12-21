@@ -13,8 +13,10 @@ interface TopbarProps {
 
 function Topbar({user, isLibrary}: TopbarProps) {
 
+    const position = isLibrary ? 'sticky bg-black' : 'absolute'
+
     return (
-        <header className="sticky top-0 right-0 left-0 flex space-x-4 bg-black">
+        <header className={`${position} top-0 right-0 left-0 flex space-x-4`}>
             <div className="flex-grow flex items-center">
                 {isLibrary && <LibraryMenu />}
             </div>

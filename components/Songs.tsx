@@ -15,7 +15,7 @@ function Songs() {
     return (
         <div className="flex flex-col px-8 space-y-1 pb-28 text-white">
             {tracks.map(({track}, index) => (
-                <Song order={index} track={track}/>
+                <Song key={track?.id} order={index + 1} track={track}/>
             ))}
         </div>
     )

@@ -1,15 +1,16 @@
-import {useSession} from 'next-auth/react'
+import type {NextPage} from 'next'
+import useSpotify from '../../hooks/useSpotify'
+import {useRecoilState} from 'recoil'
+import {playlistState} from '../../atoms/playlistAtom'
 import {useEffect, useState} from 'react'
 import {shuffle} from 'lodash'
-import {useRecoilState} from 'recoil'
-import {playlistIdState, playlistState} from '../atoms/playlistAtom'
-import useSpotify from '../hooks/useSpotify'
-import Songs from './Songs'
-import Topbar from './Topbar'
+import {useSession} from 'next-auth/react'
+import {useRouter} from 'next/router'
+import Topbar from '../../components/Topbar'
+import Songs from '../../components/Songs'
 
 const DEFAULT_COLOR = 'from-green-500'
-
-const colors = [
+const COLORS = [
     'from-red-500',
     'from-orange-500',
     'from-amber-500',
@@ -29,10 +30,12 @@ const colors = [
     'from-rose-500',
 ]
 
-function Playlist() {
+const Playlist: NextPage = () => {
+
+    const router = useRouter()
+    const playlistId = router.query.playlistId as string || ''
 
     const spotifyApi = useSpotify()
-    const [playlistId] = useRecoilState(playlistIdState)
     const [playlist, setPlaylist] = useRecoilState(playlistState)
     useEffect(() => {
         if (!spotifyApi.getAccessToken()) {
@@ -47,7 +50,7 @@ function Playlist() {
 
     const [color, setColor] = useState(DEFAULT_COLOR)
     useEffect(() => {
-        const chosenColor = shuffle(colors).pop() || DEFAULT_COLOR
+        const chosenColor = shuffle(COLORS).pop() || DEFAULT_COLOR
         setColor(chosenColor)
     }, [playlistId])
 
@@ -65,7 +68,7 @@ function Playlist() {
                 <img
                     className="h-44 w-44 shadow-2xl"
                     src={playlist.images?.[0]?.url}
-                    alt="Playlist"
+                    alt="PlaylistId"
                 />
                 <div>
                     <p className="text-xs">PLAYLIST</p>
