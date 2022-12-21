@@ -32,7 +32,8 @@ function Sidebar() {
 
     return (
         <div className="text-gray-500 p-5 border-r border-gray-900 h-screen overflow-y-scroll scrollbar-hide
-                        text-xs lg:text-sm sm:max-w-[12rem] lg:max-w-[15rem] hidden md:inline-flex">
+                        text-xs lg:text-sm sm:min-w-[12rem] lg:min-w-[15rem]
+                        hidden md:inline-flex">
             <div className="space-y-4">
                 <Link href="/" className="flex items-center space-x-2 hover:text-white">
                     <HomeIcon className="h-5 w-5"/>
