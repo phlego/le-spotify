@@ -47,7 +47,7 @@ const Collection = ({user, collectionName, items}: CollectionProps) => {
                     </button>
                 </div>
                 <div
-                    className="grid grid-cols-1 gap-y-10 gap-x-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 xl:gap-x-6">
+                    className="grid grid-cols-1 gap-y-10 gap-x-4 sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 xl:gap-x-6">
                     {items.map(({id, ...item}) => <Card key={id} {...item} />)}
                 </div>
             </section>

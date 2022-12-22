@@ -14,7 +14,8 @@ function MyApp({Component, pageProps: {session, ...pageProps}}: AppProps) {
     return (
         <SessionProvider session={session}>
             <RecoilRoot>
-                <div className="bg-black h-screen overflow-hidden font-semibold">
+                <div className="bg-black h-screen overflow-hidden font-semibold
+                                focus:outline-none focus-visible:outline-none">
                     <Head>
                         <title>Le Spotify</title>
                         <link rel="icon" sizes="16x16" type="image/png"
