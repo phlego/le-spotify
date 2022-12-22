@@ -3,34 +3,34 @@ import {useSession} from 'next-auth/react'
 import {useEffect, useState} from 'react'
 import useSpotify from '../../hooks/useSpotify'
 import Collection from '../../components/Collection'
-import ShowObjectSimplified = SpotifyApi.ShowObjectSimplified
+import ArtistObjectFull = SpotifyApi.ArtistObjectFull
 
 const Podcasts: NextPage = () => {
 
     const {data: session} = useSession()
     const spotifyApi = useSpotify()
-    const [podcasts, setPodcasts] = useState<ShowObjectSimplified[]>([])
+    const [artists, setArtists] = useState<ArtistObjectFull[]>([])
 
     useEffect(() => {
         if (!spotifyApi.getAccessToken()) return
-        spotifyApi.getMySavedShows({limit: 50})
-            .then(data => setPodcasts(data.body.items.map(item => item.show)))
+        spotifyApi.getFollowedArtists({limit: 50})
+            .then(data => setArtists(data.body.artists.items))
     }, [session, spotifyApi])
 
     const user = session?.user
-    if (!user || !podcasts.length) {
+    if (!user || !artists.length) {
         return null
     }
 
     return (
         <Collection
-            collectionName="Podcasts"
+            collectionName="Artists"
             user={user}
-            items={podcasts.map(podcast => {
-                const {id, images, name: title, description} = podcast
-                const url = `/show/${id}`
+            items={artists.map(artist => {
+                const {id, images, name: title} = artist
+                const url = `/artist/${id}`
                 const imageUrl = images[0].url
-                return {id, url, imageUrl, title, description: description || ''}
+                return {id, url, imageUrl, title, description: 'Artist'}
             })}
         />
     )
