@@ -18,9 +18,7 @@ const Collection: NextPage = () => {
     const [playlists, setPlaylists] = useState<PlaylistObjectSimplified[]>([])
 
     useEffect(() => {
-        if (!spotifyApi.getAccessToken()) {
-            return
-        }
+        if (!spotifyApi.getAccessToken()) return
 
         spotifyApi.getUserPlaylists().then(data => {
             const {body: {items}} = data
@@ -38,8 +36,9 @@ const Collection: NextPage = () => {
             return
         }
 
-        const playlistsJSON = JSON.stringify(playlists, null, 2)
-        console.log('Exporting playlists:', playlistsJSON)
+        download('playlists.json', {
+            playlists: playlists.map(({id, name}) => ({id, name})),
+        })
     }
 
     return (
@@ -53,7 +52,7 @@ const Collection: NextPage = () => {
                         onClick={() => exportPlaylist()}
                     >
                         <h2>Export</h2>
-                        <ArrowDownTrayIcon className="h-5 w-5" />
+                        <ArrowDownTrayIcon className="h-5 w-5"/>
                     </button>
                 </div>
                 <div
@@ -63,12 +62,27 @@ const Collection: NextPage = () => {
                         const url = `/playlist/${id}`
                         const imageUrl = images[0].url
 
-                        return <Card url={url} imageUrl={imageUrl} title={name} description={description || ''}/>
+                        return <Card key={id} url={url} imageUrl={imageUrl} title={name}
+                                     description={description || ''}/>
                     })}
                 </div>
             </section>
         </div>
     )
+}
+
+function download(filename: string, data: object) {
+    const element = document.createElement('a')
+    const text = JSON.stringify(data, null, 2)
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
+    element.setAttribute('download', filename)
+
+    element.style.display = 'none'
+    document.body.appendChild(element)
+
+    element.click()
+
+    document.body.removeChild(element)
 }
 
 function capitalizeFirstLetter(text: string) {

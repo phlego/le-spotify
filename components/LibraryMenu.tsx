@@ -24,7 +24,7 @@ function LibraryMenu() {
                     const activeStyles = isActive ? ACTIVE_STYLES : ''
 
                     return (
-                        <li className="inline-block cursor-pointer">
+                        <li key={collectionPath} className="inline-block cursor-pointer">
                             <Link
                                 className={`inline-block py-2 px-4 mr-2 ${activeStyles}`}
                                 href={`/collection/${collectionPath}`}
