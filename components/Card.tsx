@@ -9,6 +9,8 @@ interface CardProps {
 
 function Card({url, imageUrl, title, description}: CardProps) {
 
+    const noOverflow = 'whitespace-nowrap text-ellipsis overflow-hidden'
+
     return (
         <Link href={url} className="group">
             <div
@@ -17,8 +19,8 @@ function Card({url, imageUrl, title, description}: CardProps) {
                      alt=""
                      className="h-full w-full object-cover object-center group-hover:opacity-75"/>
             </div>
-            <h3 className="mt-4 text-white font-bold whitespace-nowrap text-ellipsis overflow-hidden">{title}</h3>
-            <p className="mt-1 text-sm text-gray-600">{description}</p>
+            <h3 className={`mt-4 text-white font-bold ${noOverflow}`} title={title}>{title}</h3>
+            <p className={`mt-1 text-sm text-gray-600 ${noOverflow}`} title={description}>{description}</p>
         </Link>
     )
 }

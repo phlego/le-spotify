@@ -1,6 +1,6 @@
 import {signOut} from 'next-auth/react'
 import {ChevronDownIcon} from '@heroicons/react/24/outline'
-import LibraryMenu from './LibraryMenu'
+import TopbarMenu from './TopbarMenu'
 
 interface TopbarProps {
     user: {
@@ -18,7 +18,7 @@ function Topbar({user, isLibrary}: TopbarProps) {
     return (
         <header className={`${position} top-0 right-0 left-0 flex space-x-4`}>
             <div className="flex-grow flex items-center">
-                {isLibrary && <LibraryMenu />}
+                {isLibrary && <TopbarMenu />}
             </div>
             <div className="flex items-center">
                 <div className="flex items-center bg-black space-x-2 m-4 opacity-90 hover:opacity-80

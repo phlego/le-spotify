@@ -10,10 +10,10 @@ const COLLECTIONS = [
 
 const ACTIVE_STYLES = 'rounded bg-gray-800 opacity-90 hover:opacity-80'
 
-function LibraryMenu() {
+function TopbarMenu() {
 
     const router = useRouter()
-    const currentPageName = router.query.collectionName as string || ''
+    const currentPageName = router.pathname.split('/').at(-1) || ''
 
     return (
         <nav className="ml-8 text-white">
@@ -39,4 +39,4 @@ function LibraryMenu() {
     )
 }
 
-export default LibraryMenu
+export default TopbarMenu
