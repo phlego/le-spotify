@@ -36,7 +36,7 @@ const Playlists: NextPage = () => {
     }, [session, spotifyApi])
 
     const user = session?.user
-    if (!user || !playlists.length) {
+    if (!user) {
         return null
     }
 
@@ -50,6 +50,25 @@ const Playlists: NextPage = () => {
                 const imageUrl = images[0].url
                 return {id, url, imageUrl, title, description: description || ''}
             })}
+            fileImporter={async (file: string) => {
+                const playlists = JSON.parse(file).playlists
+                if (!playlists) {
+                    console.warn('No playlists found!')
+                    return
+                }
+
+                for (const playlist of playlists) {
+                    try {
+                        const {id, title} = playlist
+                        console.log('Importing playlist', title)
+                        await spotifyApi.followPlaylist(id, {public: false})
+                    } catch (err) {
+                        console.error(err)
+                    }
+                }
+
+                alert('Import completed 👍')
+            }}
         />
     )
 }

@@ -13,12 +13,30 @@ const Podcasts: NextPage = () => {
 
     useEffect(() => {
         if (!spotifyApi.getAccessToken()) return
-        spotifyApi.getFollowedArtists({limit: 50})
-            .then(data => setArtists(data.body.artists.items))
+
+        async function loadItems() {
+
+            const limit = 50
+            let after: string | undefined
+            let next: string | null = null
+            let items: ArtistObjectFull[] = []
+
+            do {
+                const {body: {artists}} = await spotifyApi.getFollowedArtists({limit, after})
+                next = artists.next
+                after = artists.cursors.after
+                items = [...items, ...artists.items]
+            } while (next)
+
+            return items
+        }
+
+        loadItems().then(setArtists)
+
     }, [session, spotifyApi])
 
     const user = session?.user
-    if (!user || !artists.length) {
+    if (!user) {
         return null
     }
 
@@ -32,6 +50,16 @@ const Podcasts: NextPage = () => {
                 const imageUrl = images[0].url
                 return {id, url, imageUrl, title, description: 'Artist'}
             })}
+            fileImporter={async (file: string) => {
+                const artists = JSON.parse(file).artists
+                if (!artists) {
+                    console.warn('No artists found!')
+                    return
+                }
+
+                await spotifyApi.followArtists(artists.map(p => p.id))
+                alert('Import completed 👍')
+            }}
         />
     )
 }

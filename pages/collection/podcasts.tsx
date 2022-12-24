@@ -13,12 +13,30 @@ const Podcasts: NextPage = () => {
 
     useEffect(() => {
         if (!spotifyApi.getAccessToken()) return
-        spotifyApi.getMySavedShows({limit: 50})
-            .then(data => setPodcasts(data.body.items.map(item => item.show)))
+
+        async function loadItems() {
+
+            const limit = 50
+            let offset = 0
+            let next: string | null = null
+            let items: ShowObjectSimplified[] = []
+
+            do {
+                const {body} = await spotifyApi.getMySavedShows({limit, offset})
+                next = body.next
+                offset += limit
+                items = [...items, ...body.items.map(item => item.show)]
+            } while (next)
+
+            return items
+        }
+
+        loadItems().then(setPodcasts)
+
     }, [session, spotifyApi])
 
     const user = session?.user
-    if (!user || !podcasts.length) {
+    if (!user) {
         return null
     }
 
@@ -32,6 +50,16 @@ const Podcasts: NextPage = () => {
                 const imageUrl = images[0].url
                 return {id, url, imageUrl, title, description: description || ''}
             })}
+            fileImporter={async (file: string) => {
+                const podcasts = JSON.parse(file).podcasts
+                if (!podcasts) {
+                    console.warn('No podcasts found!')
+                    return
+                }
+
+                await spotifyApi.addToMySavedShows(podcasts.map(p => p.id))
+                alert('Import completed 👍')
+            }}
         />
     )
 }

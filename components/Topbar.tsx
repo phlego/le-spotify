@@ -25,7 +25,7 @@ function Topbar({user, isLibrary}: TopbarProps) {
                                 cursor-pointer rounded-full p-1 pr-2 bg-black text-white font-bold text-sm"
                      onClick={() => signOut()}
                 >
-                    <img src={user.image || ''} alt="avatar" className="rounded-full w-6 h-6"/>
+                    {user.image && <img src={user.image} alt="avatar" className="rounded-full w-6 h-6"/>}
                     <h2>{user.name}</h2>
                     <ChevronDownIcon className="h-5 w-5"/>
                 </div>

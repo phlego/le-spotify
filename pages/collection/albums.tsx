@@ -36,7 +36,7 @@ const Albums: NextPage = () => {
     }, [session, spotifyApi])
 
     const user = session?.user
-    if (!user || !albums.length) {
+    if (!user) {
         return null
     }
 
@@ -50,6 +50,30 @@ const Albums: NextPage = () => {
                 const imageUrl = images[0]?.url
                 return {id, url, imageUrl, title, description: artists[0].name}
             })}
+            fileImporter={async (file: string) => {
+                const albums = JSON.parse(file).albums
+                if (!albums) {
+                    console.warn('No albums found!')
+                    return
+                }
+
+                const albumIds = albums.map(p => p.id)
+                const accessToken = spotifyApi.getAccessToken()
+
+                const chunkSize = 50;
+                for (let i = 0; i < albumIds.length; i += chunkSize) {
+                    const ids = albumIds.slice(i, i + chunkSize);
+                    await fetch('https://api.spotify.com/v1/me/albums?ids=' + ids, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': 'Bearer ' + accessToken,
+                            'Content-Type': 'application/json',
+                        }
+                    })
+                }
+
+                alert('Import completed 👍')
+            }}
         />
     )
 }
