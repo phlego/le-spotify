@@ -1,27 +1,22 @@
-# Next.js + Tailwind CSS Example
+# Le Spotify
 
-This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.2)](https://tailwindcss.com/blog/tailwindcss-v3-2) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
+An app I build to back up my Spotify collections (playlists, podcasts, artists and albums).
 
-## Deploy your own
+Built with Next.JS, Spotify API, Tailwind, NextAuth and Recoil.
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or preview live with [StackBlitz](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-tailwindcss)
+To run this app, create a `.env.local` file at the root level and add the variables below.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss&project-name=with-tailwindcss&repository-name=with-tailwindcss)
-
-## How to use
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
-
-```bash
-npx create-next-app --example with-tailwindcss with-tailwindcss-app
+```
+NEXTAUTH_URL=http://localhost:3000
+NEXT_PUBLIC_CLIENT_ID=<your_client_id>
+NEXT_PUBLIC_CLIENT_SECRET=<your_client_secret>
+JWT_SECRET=<your_secret>
 ```
 
-```bash
-yarn create next-app --example with-tailwindcss with-tailwindcss-app
-```
+Then simply run `npm run dev`
 
-```bash
-pnpm create next-app --example with-tailwindcss with-tailwindcss-app
-```
-
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+💡 **Notes**:
+* You need to [register a Spotify developer account](https://developer.spotify.com/documentation/web-api/quick-start/) 
+and create an app there to have your own ClientID and ClientSecret
+* `JWT_SECRET` could be anything you like e.g. `OowfnWGIG23WWkv40EoVc`
+* To export/import your collections, go to Your Library after running the app and login with your Spotify account
